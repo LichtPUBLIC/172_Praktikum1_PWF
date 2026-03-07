@@ -3,7 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Product;
+use App\Models\Kategori;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,11 +14,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Buat 5 User, masing-masing punya 3 Product,
+        // dan setiap Product punya 2 Kategori
+        User::factory(5)->create()->each(function ($user) {
+            Product::factory(3)->create(['user_id' => $user->id])->each(function ($product) {
+                Kategori::factory(2)->create(['product_id' => $product->id]);
+            });
+        });
     }
 }
